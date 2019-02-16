@@ -2,9 +2,10 @@ import { ApolloServer } from "apollo-server-express";
 import * as express from "express";
 import "reflect-metadata";
 import { createSchema } from "./createSchema";
+import { createTypeormConn } from "./createTypeormConn";
 
 const startServer = async () => {
-  // await createTypeormConn();
+  await createTypeormConn();
 
   const server = new ApolloServer({ schema: createSchema() });
 
