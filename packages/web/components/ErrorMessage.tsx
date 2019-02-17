@@ -10,7 +10,7 @@ export const ErrorMessage: React.FunctionComponent<{
   if (!entries.length) {
     return null;
   }
-  console.log(entries);
+  // console.log(entries);
   return (
     <Message negative>
       {entries.map(([path, message]) => (
