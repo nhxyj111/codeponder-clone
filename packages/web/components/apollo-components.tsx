@@ -18,6 +18,42 @@ export interface RegisterInput {
 // Documents
 // ====================================================
 
+export type LoginMutationVariables = {
+  input: LoginInput;
+};
+
+export type LoginMutationMutation = {
+  __typename?: "Mutation";
+
+  login: LoginMutationLogin;
+};
+
+export type LoginMutationLogin = {
+  __typename?: "LoginResponse";
+
+  user: Maybe<LoginMutationUser>;
+
+  errors: Maybe<LoginMutationErrors[]>;
+};
+
+export type LoginMutationUser = {
+  __typename?: "User";
+
+  id: string;
+
+  username: string;
+
+  email: string;
+};
+
+export type LoginMutationErrors = {
+  __typename?: "Error";
+
+  path: string;
+
+  message: string;
+};
+
 export type RegisterMutationVariables = {
   input: RegisterInput;
 };
@@ -51,6 +87,60 @@ import gql from "graphql-tag";
 // Components
 // ====================================================
 
+export const LoginMutationDocument = gql`
+  mutation LoginMutation($input: LoginInput!) {
+    login(input: $input) {
+      user {
+        id
+        username
+        email
+      }
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
+export class LoginMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<LoginMutationMutation, LoginMutationVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<LoginMutationMutation, LoginMutationVariables>
+        mutation={LoginMutationDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type LoginMutationProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<LoginMutationMutation, LoginMutationVariables>
+> &
+  TChildProps;
+export type LoginMutationMutationFn = ReactApollo.MutationFn<
+  LoginMutationMutation,
+  LoginMutationVariables
+>;
+export function LoginMutationHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        LoginMutationMutation,
+        LoginMutationVariables,
+        LoginMutationProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    LoginMutationMutation,
+    LoginMutationVariables,
+    LoginMutationProps<TChildProps>
+  >(LoginMutationDocument, operationOptions);
+}
 export const RegisterMutationDocument = gql`
   mutation RegisterMutation($input: RegisterInput!) {
     register(input: $input) {
