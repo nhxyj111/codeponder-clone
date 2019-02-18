@@ -1,4 +1,5 @@
 import { Field, Formik } from "formik";
+import Router from "next/router";
 import { Button, Form } from "semantic-ui-react";
 import {
   CreateCodeReviewInput,
@@ -43,7 +44,7 @@ export default () => (
               );
             } else {
               setSubmitting(false);
-              console.log("create code review success");
+              Router.push("/home");
             }
           }}
           // validationSchema={registerSchema}

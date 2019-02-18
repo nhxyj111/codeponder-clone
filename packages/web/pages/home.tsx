@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Grid, Icon } from "semantic-ui-react";
+import { Card, Grid, Icon, Loader } from "semantic-ui-react";
 import { ListCodeReviewsQueryComponent } from "../components/apollo-components";
 import Layout from "../components/Layout";
 
@@ -7,10 +7,14 @@ const IndexPage: React.FunctionComponent = () => {
   return (
     <Layout title="list of code reviews">
       <ListCodeReviewsQueryComponent>
-        {({ data }) => {
+        {({ data, loading }) => {
+          if (!data || loading) {
+            return <Loader active inline="centered" />;
+          }
+
           return (
             <Grid>
-              {data!.listCodeReviews.map(cr => (
+              {data.listCodeReviews.map(cr => (
                 <Grid.Column key={cr.id} width={4}>
                   <Card>
                     <Card.Content>

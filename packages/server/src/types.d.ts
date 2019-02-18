@@ -10,6 +10,12 @@ export interface CreateCodeReviewInput {
   notes: string;
 }
 
+export interface CreateOfferInput {
+  userId: string;
+
+  codeReviewId: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -61,6 +67,8 @@ export interface User {
 export interface Mutation {
   createCodeReview: CreateCodeReviewResponse;
 
+  createOffer?: Maybe<CreateOfferResponse>;
+
   login: LoginResponse;
 
   register: RegisterResponse;
@@ -76,6 +84,10 @@ export interface Error {
   path: string;
 
   message: string;
+}
+
+export interface CreateOfferResponse {
+  ok: boolean;
 }
 
 export interface LoginResponse {
@@ -94,6 +106,9 @@ export interface RegisterResponse {
 
 export interface CreateCodeReviewMutationArgs {
   input: CreateCodeReviewInput;
+}
+export interface CreateOfferMutationArgs {
+  input: CreateOfferInput;
 }
 export interface LoginMutationArgs {
   input: LoginInput;
@@ -266,6 +281,12 @@ export namespace MutationResolvers {
       Context
     >;
 
+    createOffer?: CreateOfferResolver<
+      Maybe<CreateOfferResponse>,
+      TypeParent,
+      Context
+    >;
+
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
@@ -278,6 +299,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateCodeReviewArgs>;
   export interface CreateCodeReviewArgs {
     input: CreateCodeReviewInput;
+  }
+
+  export type CreateOfferResolver<
+    R = Maybe<CreateOfferResponse>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, CreateOfferArgs>;
+  export interface CreateOfferArgs {
+    input: CreateOfferInput;
   }
 
   export type LoginResolver<
@@ -336,6 +366,21 @@ export namespace ErrorResolvers {
   export type MessageResolver<
     R = string,
     Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace CreateOfferResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CreateOfferResponse
+  > {
+    ok?: OkResolver<boolean, TypeParent, Context>;
+  }
+
+  export type OkResolver<
+    R = boolean,
+    Parent = CreateOfferResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -416,6 +461,7 @@ export interface IResolvers<Context = MyContext> {
     Context
   >;
   Error?: ErrorResolvers.Resolvers<Context>;
+  CreateOfferResponse?: CreateOfferResponseResolvers.Resolvers<Context>;
   LoginResponse?: LoginResponseResolvers.Resolvers<Context>;
   RegisterResponse?: RegisterResponseResolvers.Resolvers<Context>;
 }

@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 import { CodeReview } from "./CodeReview";
+import { Offer } from "./Offer";
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,4 +24,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => CodeReview, cr => cr.ownerId)
   codeReviews: CodeReview[];
+
+  @OneToMany(() => Offer, offer => offer.user)
+  offers: Offer[];
 }

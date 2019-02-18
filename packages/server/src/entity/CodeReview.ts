@@ -4,8 +4,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
+import { Offer } from "./Offer";
 import { User } from "./User";
 
 @Entity()
@@ -31,4 +33,8 @@ export class CodeReview extends BaseEntity {
   @ManyToOne(() => User, user => user.codeReviews)
   @JoinColumn({ name: "owner" })
   user: Promise<User>;
+
+  @OneToMany(() => Offer, offer => offer.codeReview)
+  @JoinColumn({ name: "owner" })
+  offers: Offer[];
 }
