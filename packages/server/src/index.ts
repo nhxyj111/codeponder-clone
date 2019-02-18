@@ -3,9 +3,11 @@ import * as connectRedis from "connect-redis";
 import * as cors from "cors";
 import * as express from "express";
 import * as session from "express-session";
+import { applyMiddleware } from "graphql-middleware";
 import "reflect-metadata";
 import { createSchema } from "./createSchema";
 import { createTypeormConn } from "./createTypeormConn";
+import { middleware } from "./middleware";
 import { redis } from "./redis";
 
 // TODO:
@@ -44,7 +46,7 @@ const startServer = async () => {
   );
 
   const server = new ApolloServer({
-    schema: createSchema(),
+    schema: applyMiddleware(createSchema(), middleware),
     context: ({ req }: any) => ({
       req
     })

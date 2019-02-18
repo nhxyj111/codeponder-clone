@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from "typeorm";
+import { CodeReview } from "./CodeReview";
 
 @Entity()
 export class User extends BaseEntity {
@@ -13,4 +20,7 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => CodeReview, cr => cr.owner)
+  codeReviews: CodeReview[];
 }

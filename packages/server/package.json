@@ -31,6 +31,8 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "graphql": "^14.1.1",
+    "graphql-chain": "^1.1.0",
+    "graphql-middleware": "^3.0.2",
     "graphql-tools": "^4.0.4",
     "ioredis": "^4.6.2",
     "mysql": "^2.14.1",

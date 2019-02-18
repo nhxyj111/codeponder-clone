@@ -5226,6 +5226,11 @@ graphql-anywhere@^4.1.0-alpha.0:
     apollo-utilities "^1.1.3"
     tslib "^1.9.3"
 
+graphql-chain@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/graphql-chain/-/graphql-chain-1.1.0.tgz#27d76a017207d660470c06b0cb9f6755872e6a25"
+  integrity sha512-NsLwQBwg+tJkjtJ+PNONwaFbgDO0XOk6gjMsEg985AO0pxk7RMdVYdu6AHfeIUz/GIwvJy43yaas9R6LdMjF2Q==
+
 graphql-code-generator@^0.16.1:
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/graphql-code-generator/-/graphql-code-generator-0.16.1.tgz#7220c98dd1cfaaf6022f7e629efefff4c90eb211"
@@ -5355,6 +5360,13 @@ graphql-import@0.7.1, graphql-import@^0.7.1:
   dependencies:
     lodash "^4.17.4"
     resolve-from "^4.0.0"
+
+graphql-middleware@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-3.0.2.tgz#c8cdb67615eec02aec237b455e679f5fc973ddc4"
+  integrity sha512-sRqu1sF+77z42z1OVM1QDHKQWnWY5K3nAgqWiZwx3U4tqNZprrDuXxSChPMliV343IrVkpYdejUYq9w24Ot3FA==
+  dependencies:
+    graphql-tools "^4.0.4"
 
 graphql-request@^1.5.0:
   version "1.8.2"

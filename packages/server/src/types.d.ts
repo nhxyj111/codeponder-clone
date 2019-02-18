@@ -1,5 +1,15 @@
 export type Maybe<T> = T | null;
 
+export interface CreateCodeReviewInput {
+  numDays?: Maybe<number>;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -31,21 +41,41 @@ export interface User {
 }
 
 export interface Mutation {
+  createCodeReview?: Maybe<CreateCodeReviewResponse>;
+
   login: LoginResponse;
 
   register: RegisterResponse;
 }
 
-export interface LoginResponse {
+export interface CreateCodeReviewResponse {
   errors?: Maybe<Error[]>;
 
-  user?: Maybe<User>;
+  codeReview?: Maybe<CodeReview>;
 }
 
 export interface Error {
   path: string;
 
   message: string;
+}
+
+export interface CodeReview {
+  id: string;
+
+  numDays?: Maybe<number>;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes?: Maybe<string>;
+}
+
+export interface LoginResponse {
+  errors?: Maybe<Error[]>;
+
+  user?: Maybe<User>;
 }
 
 export interface RegisterResponse {
@@ -56,6 +86,9 @@ export interface RegisterResponse {
 // Arguments
 // ====================================================
 
+export interface CreateCodeReviewMutationArgs {
+  input: CreateCodeReviewInput;
+}
 export interface LoginMutationArgs {
   input: LoginInput;
 }
@@ -156,9 +189,24 @@ export namespace UserResolvers {
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    createCodeReview?: CreateCodeReviewResolver<
+      Maybe<CreateCodeReviewResponse>,
+      TypeParent,
+      Context
+    >;
+
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
+  }
+
+  export type CreateCodeReviewResolver<
+    R = Maybe<CreateCodeReviewResponse>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, CreateCodeReviewArgs>;
+  export interface CreateCodeReviewArgs {
+    input: CreateCodeReviewInput;
   }
 
   export type LoginResolver<
@@ -180,21 +228,24 @@ export namespace MutationResolvers {
   }
 }
 
-export namespace LoginResponseResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
+export namespace CreateCodeReviewResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CreateCodeReviewResponse
+  > {
     errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>;
 
-    user?: UserResolver<Maybe<User>, TypeParent, Context>;
+    codeReview?: CodeReviewResolver<Maybe<CodeReview>, TypeParent, Context>;
   }
 
   export type ErrorsResolver<
     R = Maybe<Error[]>,
-    Parent = LoginResponse,
+    Parent = CreateCodeReviewResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
-  export type UserResolver<
-    R = Maybe<User>,
-    Parent = LoginResponse,
+  export type CodeReviewResolver<
+    R = Maybe<CodeReview>,
+    Parent = CreateCodeReviewResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -214,6 +265,65 @@ export namespace ErrorResolvers {
   export type MessageResolver<
     R = string,
     Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace CodeReviewResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = CodeReview> {
+    id?: IdResolver<string, TypeParent, Context>;
+
+    numDays?: NumDaysResolver<Maybe<number>, TypeParent, Context>;
+
+    codeUrl?: CodeUrlResolver<string, TypeParent, Context>;
+
+    techTags?: TechTagsResolver<string[], TypeParent, Context>;
+
+    notes?: NotesResolver<Maybe<string>, TypeParent, Context>;
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type NumDaysResolver<
+    R = Maybe<number>,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type CodeUrlResolver<
+    R = string,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type TechTagsResolver<
+    R = string[],
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type NotesResolver<
+    R = Maybe<string>,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace LoginResponseResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
+    errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>;
+
+    user?: UserResolver<Maybe<User>, TypeParent, Context>;
+  }
+
+  export type ErrorsResolver<
+    R = Maybe<Error[]>,
+    Parent = LoginResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type UserResolver<
+    R = Maybe<User>,
+    Parent = LoginResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -270,8 +380,12 @@ export interface IResolvers<Context = MyContext> {
   Query?: QueryResolvers.Resolvers<Context>;
   User?: UserResolvers.Resolvers<Context>;
   Mutation?: MutationResolvers.Resolvers<Context>;
-  LoginResponse?: LoginResponseResolvers.Resolvers<Context>;
+  CreateCodeReviewResponse?: CreateCodeReviewResponseResolvers.Resolvers<
+    Context
+  >;
   Error?: ErrorResolvers.Resolvers<Context>;
+  CodeReview?: CodeReviewResolvers.Resolvers<Context>;
+  LoginResponse?: LoginResponseResolvers.Resolvers<Context>;
   RegisterResponse?: RegisterResponseResolvers.Resolvers<Context>;
 }
 
