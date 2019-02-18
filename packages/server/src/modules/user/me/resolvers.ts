@@ -4,7 +4,7 @@ import { QueryResolvers } from "../../../types";
 const resolvers: QueryResolvers.Resolvers = {
   me: async (_, __, { req }) => {
     const { userId } = req.session!;
-    console.log(req.session);
+    console.log(req.headers);
     if (!userId) {
       return null;
     }
