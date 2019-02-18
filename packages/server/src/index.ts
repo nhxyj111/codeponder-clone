@@ -14,17 +14,17 @@ import { redis } from "./redis";
 const SESSION_SECRET = "ThisIsSessionSecret";
 const RedisStore = connectRedis(session);
 
-const corsOptions = {
-  credentials: true,
-  origin: "http://localhost:3000"
-};
-
 const startServer = async () => {
   await createTypeormConn();
 
   const app = express();
 
-  app.use(cors(corsOptions));
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000"
+    })
+  );
 
   app.use(
     session({

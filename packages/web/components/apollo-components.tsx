@@ -10,6 +10,12 @@ export interface CreateCodeReviewInput {
   notes: string;
 }
 
+export interface CreateOfferInput {
+  userId: string;
+
+  codeReviewId: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -80,6 +86,22 @@ export type ListCodeReviewsQueryOwner = {
   username: string;
 };
 
+export type CreateOfferMutationVariables = {
+  input: CreateOfferInput;
+};
+
+export type CreateOfferMutationMutation = {
+  __typename?: "Mutation";
+
+  createOffer: Maybe<CreateOfferMutationCreateOffer>;
+};
+
+export type CreateOfferMutationCreateOffer = {
+  __typename?: "CreateOfferResponse";
+
+  ok: boolean;
+};
+
 export type LoginMutationVariables = {
   input: LoginInput;
 };
@@ -138,6 +160,24 @@ export type RegisterMutationErrors = {
   path: string;
 
   message: string;
+};
+
+export type MeQueryVariables = {};
+
+export type MeQueryQuery = {
+  __typename?: "Query";
+
+  me: Maybe<MeQueryMe>;
+};
+
+export type MeQueryMe = {
+  __typename?: "User";
+
+  id: string;
+
+  email: string;
+
+  username: string;
 };
 
 export type CodeReviewInfoFragment = {
@@ -298,6 +338,61 @@ export function ListCodeReviewsQueryHOC<TProps, TChildProps = any>(
     ListCodeReviewsQueryProps<TChildProps>
   >(ListCodeReviewsQueryDocument, operationOptions);
 }
+export const CreateOfferMutationDocument = gql`
+  mutation CreateOfferMutation($input: CreateOfferInput!) {
+    createOffer(input: $input) {
+      ok
+    }
+  }
+`;
+export class CreateOfferMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateOfferMutationMutation,
+      CreateOfferMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateOfferMutationMutation,
+        CreateOfferMutationVariables
+      >
+        mutation={CreateOfferMutationDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type CreateOfferMutationProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    CreateOfferMutationMutation,
+    CreateOfferMutationVariables
+  >
+> &
+  TChildProps;
+export type CreateOfferMutationMutationFn = ReactApollo.MutationFn<
+  CreateOfferMutationMutation,
+  CreateOfferMutationVariables
+>;
+export function CreateOfferMutationHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateOfferMutationMutation,
+        CreateOfferMutationVariables,
+        CreateOfferMutationProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    CreateOfferMutationMutation,
+    CreateOfferMutationVariables,
+    CreateOfferMutationProps<TChildProps>
+  >(CreateOfferMutationDocument, operationOptions);
+}
 export const LoginMutationDocument = gql`
   mutation LoginMutation($input: LoginInput!) {
     login(input: $input) {
@@ -403,4 +498,46 @@ export function RegisterMutationHOC<TProps, TChildProps = any>(
     RegisterMutationVariables,
     RegisterMutationProps<TChildProps>
   >(RegisterMutationDocument, operationOptions);
+}
+export const MeQueryDocument = gql`
+  query MeQuery {
+    me {
+      id
+      email
+      username
+    }
+  }
+`;
+export class MeQueryComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<MeQueryQuery, MeQueryVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<MeQueryQuery, MeQueryVariables>
+        query={MeQueryDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type MeQueryProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<MeQueryQuery, MeQueryVariables>
+> &
+  TChildProps;
+export function MeQueryHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        MeQueryQuery,
+        MeQueryVariables,
+        MeQueryProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    MeQueryQuery,
+    MeQueryVariables,
+    MeQueryProps<TChildProps>
+  >(MeQueryDocument, operationOptions);
 }

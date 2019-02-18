@@ -24,6 +24,7 @@
     "@codeponder/common": "1.0.0",
     "@graphql-modules/epoxy": "^0.4.0",
     "@graphql-modules/sonar": "^0.4.0",
+    "apollo-link-http": "^1.5.11",
     "apollo-server-express": "^2.4.2",
     "argon2": "^0.20.1",
     "connect-redis": "^3.4.0",

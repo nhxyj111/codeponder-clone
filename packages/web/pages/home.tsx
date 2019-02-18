@@ -1,46 +1,47 @@
 import * as React from "react";
-import { Card, Grid, Icon, Loader } from "semantic-ui-react";
-import { ListCodeReviewsQueryComponent } from "../components/apollo-components";
+import { Grid, Loader } from "semantic-ui-react";
+import {
+  CreateOfferMutationComponent,
+  ListCodeReviewsQueryComponent,
+  MeQueryComponent
+} from "../components/apollo-components";
+import CodeReviewCard from "../components/CodeReviewCard";
 import Layout from "../components/Layout";
 
 const IndexPage: React.FunctionComponent = () => {
   return (
     <Layout title="list of code reviews">
-      <ListCodeReviewsQueryComponent>
+      <MeQueryComponent>
         {({ data, loading }) => {
           if (!data || loading) {
-            return <Loader active inline="centered" />;
+            return <div>loading...</div>;
           }
-
+          console.log(data);
+          const meData = data;
           return (
-            <Grid>
-              {data.listCodeReviews.map(cr => (
-                <Grid.Column key={cr.id} width={4}>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>
-                        {cr.owner.username} wants a review
-                      </Card.Header>
-                      <Card.Meta>
-                        <span className="date">in {cr.numDays} days</span>
-                      </Card.Meta>
-                      <Card.Description>
-                        {cr.notes.slice(0, 150)}
-                      </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra>
-                      <a href={cr.codeUrl}>
-                        <Icon name="user" />
-                        Offer Review
-                      </a>
-                    </Card.Content>
-                  </Card>
-                </Grid.Column>
-              ))}
-            </Grid>
+            <CreateOfferMutationComponent>
+              {() => (
+                <ListCodeReviewsQueryComponent>
+                  {({ data, loading }) => {
+                    if (!data || loading) {
+                      return <Loader active inline="centered" />;
+                    }
+
+                    return (
+                      <Grid>
+                        {data.listCodeReviews.map(cr => (
+                          <CodeReviewCard cr={cr} key={cr.id} />
+                        ))}
+                        {meData.me && meData.me.username}
+                      </Grid>
+                    );
+                  }}
+                </ListCodeReviewsQueryComponent>
+              )}
+            </CreateOfferMutationComponent>
           );
         }}
-      </ListCodeReviewsQueryComponent>
+      </MeQueryComponent>
     </Layout>
   );
 };

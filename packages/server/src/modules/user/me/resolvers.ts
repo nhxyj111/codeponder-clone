@@ -3,10 +3,12 @@ import { QueryResolvers } from "../../../types";
 
 const resolvers: QueryResolvers.Resolvers = {
   me: async (_, __, { req }) => {
-    if (!req.session!.userId) {
+    const { userId } = req.session!;
+    console.log(req.session);
+    if (!userId) {
       return null;
     }
-    const user = await User.findOne(req.session!.userId);
+    const user = await User.findOne(userId);
     if (user) {
       return user;
     }
