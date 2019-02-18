@@ -2,7 +2,6 @@ import App, { Container } from "next/app";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 import "semantic-ui-css/semantic.min.css";
-import { Container as SemanticContainer } from "semantic-ui-react";
 import withApolloClient from "../lib/with-apollo-client";
 
 class MyApp extends App {
@@ -11,9 +10,7 @@ class MyApp extends App {
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
-          <SemanticContainer>
-            <Component {...pageProps} />
-          </SemanticContainer>
+          <Component {...pageProps} />
         </ApolloProvider>
       </Container>
     );

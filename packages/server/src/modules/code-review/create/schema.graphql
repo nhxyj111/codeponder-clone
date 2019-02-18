@@ -11,5 +11,5 @@ input CreateCodeReviewInput {
 }
 
 type Mutation {
-  createCodeReview(input: CreateCodeReviewInput!): CreateCodeReviewResponse
+  createCodeReview(input: CreateCodeReviewInput!): CreateCodeReviewResponse!
 }

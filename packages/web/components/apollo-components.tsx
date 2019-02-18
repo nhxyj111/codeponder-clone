@@ -1,5 +1,15 @@
 export type Maybe<T> = T | null;
 
+export interface CreateCodeReviewInput {
+  numDays?: Maybe<number>;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -17,6 +27,46 @@ export interface RegisterInput {
 // ====================================================
 // Documents
 // ====================================================
+
+export type CreateCodeReviewMutationVariables = {
+  input: CreateCodeReviewInput;
+};
+
+export type CreateCodeReviewMutationMutation = {
+  __typename?: "Mutation";
+
+  createCodeReview: CreateCodeReviewMutationCreateCodeReview;
+};
+
+export type CreateCodeReviewMutationCreateCodeReview = {
+  __typename?: "CreateCodeReviewResponse";
+
+  codeReview: Maybe<CreateCodeReviewMutationCodeReview>;
+
+  errors: Maybe<CreateCodeReviewMutationErrors[]>;
+};
+
+export type CreateCodeReviewMutationCodeReview = {
+  __typename?: "CodeReview";
+
+  id: string;
+
+  numDays: Maybe<number>;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: Maybe<string>;
+};
+
+export type CreateCodeReviewMutationErrors = {
+  __typename?: "Error";
+
+  path: string;
+
+  message: string;
+};
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -87,6 +137,71 @@ import gql from "graphql-tag";
 // Components
 // ====================================================
 
+export const CreateCodeReviewMutationDocument = gql`
+  mutation CreateCodeReviewMutation($input: CreateCodeReviewInput!) {
+    createCodeReview(input: $input) {
+      codeReview {
+        id
+        numDays
+        codeUrl
+        techTags
+        notes
+      }
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
+export class CreateCodeReviewMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateCodeReviewMutationMutation,
+      CreateCodeReviewMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateCodeReviewMutationMutation,
+        CreateCodeReviewMutationVariables
+      >
+        mutation={CreateCodeReviewMutationDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type CreateCodeReviewMutationProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    CreateCodeReviewMutationMutation,
+    CreateCodeReviewMutationVariables
+  >
+> &
+  TChildProps;
+export type CreateCodeReviewMutationMutationFn = ReactApollo.MutationFn<
+  CreateCodeReviewMutationMutation,
+  CreateCodeReviewMutationVariables
+>;
+export function CreateCodeReviewMutationHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateCodeReviewMutationMutation,
+        CreateCodeReviewMutationVariables,
+        CreateCodeReviewMutationProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    CreateCodeReviewMutationMutation,
+    CreateCodeReviewMutationVariables,
+    CreateCodeReviewMutationProps<TChildProps>
+  >(CreateCodeReviewMutationDocument, operationOptions);
+}
 export const LoginMutationDocument = gql`
   mutation LoginMutation($input: LoginInput!) {
     login(input: $input) {
