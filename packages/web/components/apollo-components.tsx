@@ -46,19 +46,7 @@ export type CreateCodeReviewMutationCreateCodeReview = {
   errors: Maybe<CreateCodeReviewMutationErrors[]>;
 };
 
-export type CreateCodeReviewMutationCodeReview = {
-  __typename?: "CodeReview";
-
-  id: string;
-
-  numDays: Maybe<number>;
-
-  codeUrl: string;
-
-  techTags: string[];
-
-  notes: Maybe<string>;
-};
+export type CreateCodeReviewMutationCodeReview = CodeReviewInfoFragment;
 
 export type CreateCodeReviewMutationErrors = {
   __typename?: "Error";
@@ -67,6 +55,16 @@ export type CreateCodeReviewMutationErrors = {
 
   message: string;
 };
+
+export type ListCodeReviewsQueryVariables = {};
+
+export type ListCodeReviewsQueryQuery = {
+  __typename?: "Query";
+
+  listCodeReviews: ListCodeReviewsQueryListCodeReviews[];
+};
+
+export type ListCodeReviewsQueryListCodeReviews = CodeReviewInfoFragment;
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -128,10 +126,38 @@ export type RegisterMutationErrors = {
   message: string;
 };
 
+export type CodeReviewInfoFragment = {
+  __typename?: "CodeReview";
+
+  id: string;
+
+  numDays: Maybe<number>;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: string;
+};
+
 import * as ReactApollo from "react-apollo";
 import * as React from "react";
 
 import gql from "graphql-tag";
+
+// ====================================================
+// Fragments
+// ====================================================
+
+export const CodeReviewInfoFragmentDoc = gql`
+  fragment CodeReviewInfo on CodeReview {
+    id
+    numDays
+    codeUrl
+    techTags
+    notes
+  }
+`;
 
 // ====================================================
 // Components
@@ -141,11 +167,7 @@ export const CreateCodeReviewMutationDocument = gql`
   mutation CreateCodeReviewMutation($input: CreateCodeReviewInput!) {
     createCodeReview(input: $input) {
       codeReview {
-        id
-        numDays
-        codeUrl
-        techTags
-        notes
+        ...CodeReviewInfo
       }
       errors {
         path
@@ -153,6 +175,8 @@ export const CreateCodeReviewMutationDocument = gql`
       }
     }
   }
+
+  ${CodeReviewInfoFragmentDoc}
 `;
 export class CreateCodeReviewMutationComponent extends React.Component<
   Partial<
@@ -201,6 +225,59 @@ export function CreateCodeReviewMutationHOC<TProps, TChildProps = any>(
     CreateCodeReviewMutationVariables,
     CreateCodeReviewMutationProps<TChildProps>
   >(CreateCodeReviewMutationDocument, operationOptions);
+}
+export const ListCodeReviewsQueryDocument = gql`
+  query ListCodeReviewsQuery {
+    listCodeReviews {
+      ...CodeReviewInfo
+    }
+  }
+
+  ${CodeReviewInfoFragmentDoc}
+`;
+export class ListCodeReviewsQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      ListCodeReviewsQueryQuery,
+      ListCodeReviewsQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<
+        ListCodeReviewsQueryQuery,
+        ListCodeReviewsQueryVariables
+      >
+        query={ListCodeReviewsQueryDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type ListCodeReviewsQueryProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<
+    ListCodeReviewsQueryQuery,
+    ListCodeReviewsQueryVariables
+  >
+> &
+  TChildProps;
+export function ListCodeReviewsQueryHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ListCodeReviewsQueryQuery,
+        ListCodeReviewsQueryVariables,
+        ListCodeReviewsQueryProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    ListCodeReviewsQueryQuery,
+    ListCodeReviewsQueryVariables,
+    ListCodeReviewsQueryProps<TChildProps>
+  >(ListCodeReviewsQueryDocument, operationOptions);
 }
 export const LoginMutationDocument = gql`
   mutation LoginMutation($input: LoginInput!) {

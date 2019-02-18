@@ -3,5 +3,5 @@ type CodeReview {
   numDays: Int
   codeUrl: String!
   techTags: [String!]!
-  notes: String
+  notes: String!
 }

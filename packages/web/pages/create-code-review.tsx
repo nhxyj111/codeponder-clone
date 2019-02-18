@@ -6,6 +6,7 @@ import {
 } from "../components/apollo-components";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { InputField } from "../components/formik-fields/InputField";
+import { TextAreaField } from "../components/formik-fields/TextAreaField";
 import Layout from "../components/Layout";
 import { normalizeErrors } from "../utils/normalizeErrors";
 
@@ -21,8 +22,14 @@ export default () => (
         <Formik<CreateCodeReviewInput>
           initialValues={{ numDays: 0, codeUrl: "", techTags: [], notes: "" }}
           onSubmit={async (input, { setErrors, setSubmitting }) => {
+            const { numDays, ...restInput } = input;
             const response = await mutate({
-              variables: { input }
+              variables: {
+                input: {
+                  ...restInput,
+                  numDays: numDays as number
+                }
+              }
             });
             if (
               response &&
@@ -49,12 +56,19 @@ export default () => (
                 label="Number of days"
                 placeholder="Number of days"
                 component={InputField}
+                type="number"
               />
               <Field
                 name="codeUrl"
                 label="Github Url"
                 placeholder="Github Url"
                 component={InputField}
+              />
+              <Field
+                name="notes"
+                label="Notes"
+                placeholder="Notes"
+                component={TextAreaField}
               />
               <ErrorMessage errors={errors as any} />
               <Button disabled={isSubmitting} type="submit">
