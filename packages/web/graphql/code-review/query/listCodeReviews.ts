@@ -5,6 +5,11 @@ export const listCodeReviewsQuery = gql`
   query ListCodeReviewsQuery {
     listCodeReviews {
       ...CodeReviewInfo
+      owner {
+        id
+        email
+        username
+      }
     }
   }
 

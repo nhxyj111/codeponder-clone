@@ -64,7 +64,21 @@ export type ListCodeReviewsQueryQuery = {
   listCodeReviews: ListCodeReviewsQueryListCodeReviews[];
 };
 
-export type ListCodeReviewsQueryListCodeReviews = CodeReviewInfoFragment;
+export type ListCodeReviewsQueryListCodeReviews = {
+  __typename?: "CodeReview";
+
+  owner: ListCodeReviewsQueryOwner;
+} & CodeReviewInfoFragment;
+
+export type ListCodeReviewsQueryOwner = {
+  __typename?: "User";
+
+  id: string;
+
+  email: string;
+
+  username: string;
+};
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -230,6 +244,11 @@ export const ListCodeReviewsQueryDocument = gql`
   query ListCodeReviewsQuery {
     listCodeReviews {
       ...CodeReviewInfo
+      owner {
+        id
+        email
+        username
+      }
     }
   }
 

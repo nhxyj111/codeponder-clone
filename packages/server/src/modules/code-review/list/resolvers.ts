@@ -9,7 +9,7 @@ import { QueryResolvers } from "../../../types";
 
 const resolvers: QueryResolvers.Resolvers = {
   listCodeReviews: () => {
-    return CodeReview.find();
+    return CodeReview.find() as any;
   }
 };
 

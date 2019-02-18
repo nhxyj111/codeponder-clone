@@ -11,7 +11,7 @@ const resolvers: MutationResolvers.Resolvers = {
       notes,
       numDays: numDays || undefined,
       techTags,
-      owner: req.session!.userId
+      ownerId: req.session!.userId
     }).save();
     return {
       errors: [],

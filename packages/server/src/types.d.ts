@@ -43,7 +43,11 @@ export interface CodeReview {
 
   techTags: string[];
 
-  notes?: Maybe<string>;
+  notes: string;
+
+  ownerId: string;
+
+  owner: User;
 }
 
 export interface User {
@@ -184,7 +188,11 @@ export namespace CodeReviewResolvers {
 
     techTags?: TechTagsResolver<string[], TypeParent, Context>;
 
-    notes?: NotesResolver<Maybe<string>, TypeParent, Context>;
+    notes?: NotesResolver<string, TypeParent, Context>;
+
+    ownerId?: OwnerIdResolver<string, TypeParent, Context>;
+
+    owner?: OwnerResolver<User, TypeParent, Context>;
   }
 
   export type IdResolver<
@@ -208,7 +216,17 @@ export namespace CodeReviewResolvers {
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type NotesResolver<
-    R = Maybe<string>,
+    R = string,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type OwnerIdResolver<
+    R = string,
+    Parent = CodeReview,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type OwnerResolver<
+    R = User,
     Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;

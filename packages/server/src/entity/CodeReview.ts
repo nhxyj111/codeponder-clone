@@ -26,7 +26,7 @@ export class CodeReview extends BaseEntity {
   notes: string;
 
   @Column()
-  owner: string;
+  ownerId: string;
 
   @ManyToOne(() => User, user => user.codeReviews)
   @JoinColumn({ name: "owner" })

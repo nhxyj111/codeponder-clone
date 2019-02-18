@@ -4,4 +4,6 @@ type CodeReview {
   codeUrl: String!
   techTags: [String!]!
   notes: String!
+  ownerId: String!
+  owner: User!
 }

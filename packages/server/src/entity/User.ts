@@ -21,6 +21,6 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => CodeReview, cr => cr.owner)
+  @OneToMany(() => CodeReview, cr => cr.ownerId)
   codeReviews: CodeReview[];
 }
