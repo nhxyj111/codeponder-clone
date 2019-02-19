@@ -24,6 +24,7 @@ export const middleware: IMiddlewareTypeMap = {
     createOffer: standardMiddleware
   },
   Query: {
-    receivedOffers: standardMiddleware
+    receivedOffers: standardMiddleware,
+    myOffers: standardMiddleware
   }
 };

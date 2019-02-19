@@ -51,6 +51,8 @@ export interface RegisterInput {
 export interface Query {
   listCodeReviews: CodeReview[];
 
+  myOffers: Offer[];
+
   receivedOffers: Offer[];
 
   me?: Maybe<User>;
@@ -226,6 +228,8 @@ export namespace QueryResolvers {
       Context
     >;
 
+    myOffers?: MyOffersResolver<Offer[], TypeParent, Context>;
+
     receivedOffers?: ReceivedOffersResolver<Offer[], TypeParent, Context>;
 
     me?: MeResolver<Maybe<User>, TypeParent, Context>;
@@ -233,6 +237,11 @@ export namespace QueryResolvers {
 
   export type ListCodeReviewsResolver<
     R = CodeReview[],
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type MyOffersResolver<
+    R = Offer[],
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>;

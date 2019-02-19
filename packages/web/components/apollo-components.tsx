@@ -132,9 +132,13 @@ export type ReceivedOffersQueryQuery = {
   __typename?: "Query";
 
   receivedOffers: ReceivedOffersQueryReceivedOffers[];
+
+  myOffers: ReceivedOffersQueryMyOffers[];
 };
 
 export type ReceivedOffersQueryReceivedOffers = OfferInfoFragment;
+
+export type ReceivedOffersQueryMyOffers = OfferInfoFragment;
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -527,6 +531,9 @@ export function UpdateOfferStatusMutationHOC<TProps, TChildProps = any>(
 export const ReceivedOffersQueryDocument = gql`
   query ReceivedOffersQuery {
     receivedOffers {
+      ...OfferInfo
+    }
+    myOffers {
       ...OfferInfo
     }
   }
