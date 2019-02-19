@@ -26,7 +26,7 @@ const Layout: React.FunctionComponent<Props> = ({
       <LogoutMutationComponent>
         {mutate => (
           <MeQueryComponent>
-            {({ data }) => {
+            {({ data, client }) => {
               return (
                 <Menu>
                   <Link href="/home">
@@ -53,6 +53,8 @@ const Layout: React.FunctionComponent<Props> = ({
                               });
                             }
                           });
+                          await client.resetStore();
+                          window.location.href = "/home";
                           Router.push("/home");
                         }}>
                         Logout
