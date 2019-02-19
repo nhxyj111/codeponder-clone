@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { UserInfoFragment } from "../../user/fragments";
 import { CodeReviewInfoFragment } from "../fragments";
 
 export const listCodeReviewsQuery = gql`
@@ -6,12 +7,11 @@ export const listCodeReviewsQuery = gql`
     listCodeReviews {
       ...CodeReviewInfo
       owner {
-        id
-        email
-        username
+        ...UserInfo
       }
     }
   }
 
   ${CodeReviewInfoFragment}
+  ${UserInfoFragment}
 `;

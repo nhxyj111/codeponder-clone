@@ -37,6 +37,9 @@ const Layout: React.FunctionComponent<Props> = ({
                   </Menu.Item>
                   {data && data.me ? (
                     <>
+                      <Menu.Item onClick={() => Router.push("/view-offers")}>
+                        Offers
+                      </Menu.Item>
                       <Menu.Item position="right">{data.me.username}</Menu.Item>
                       <Menu.Item
                         onClick={async () => {

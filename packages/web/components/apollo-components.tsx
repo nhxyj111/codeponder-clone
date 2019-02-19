@@ -76,15 +76,7 @@ export type ListCodeReviewsQueryListCodeReviews = {
   owner: ListCodeReviewsQueryOwner;
 } & CodeReviewInfoFragment;
 
-export type ListCodeReviewsQueryOwner = {
-  __typename?: "User";
-
-  id: string;
-
-  email: string;
-
-  username: string;
-};
+export type ListCodeReviewsQueryOwner = UserInfoFragment;
 
 export type CreateOfferMutationVariables = {
   input: CreateOfferInput;
@@ -101,6 +93,28 @@ export type CreateOfferMutationCreateOffer = {
 
   ok: boolean;
 };
+
+export type ReceivedOffersQueryVariables = {};
+
+export type ReceivedOffersQueryQuery = {
+  __typename?: "Query";
+
+  receivedOffers: ReceivedOffersQueryReceivedOffers[];
+};
+
+export type ReceivedOffersQueryReceivedOffers = {
+  __typename?: "Offer";
+
+  accepted: boolean;
+
+  codeReview: ReceivedOffersQueryCodeReview;
+
+  sender: ReceivedOffersQuerySender;
+};
+
+export type ReceivedOffersQueryCodeReview = CodeReviewInfoFragment;
+
+export type ReceivedOffersQuerySender = UserInfoFragment;
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -120,15 +134,7 @@ export type LoginMutationLogin = {
   errors: Maybe<LoginMutationErrors[]>;
 };
 
-export type LoginMutationUser = {
-  __typename?: "User";
-
-  id: string;
-
-  username: string;
-
-  email: string;
-};
+export type LoginMutationUser = UserInfoFragment;
 
 export type LoginMutationErrors = {
   __typename?: "Error";
@@ -178,15 +184,7 @@ export type MeQueryQuery = {
   me: Maybe<MeQueryMe>;
 };
 
-export type MeQueryMe = {
-  __typename?: "User";
-
-  id: string;
-
-  email: string;
-
-  username: string;
-};
+export type MeQueryMe = UserInfoFragment;
 
 export type CodeReviewInfoFragment = {
   __typename?: "CodeReview";
@@ -200,6 +198,16 @@ export type CodeReviewInfoFragment = {
   techTags: string[];
 
   notes: string;
+};
+
+export type UserInfoFragment = {
+  __typename?: "User";
+
+  id: string;
+
+  email: string;
+
+  username: string;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -218,6 +226,14 @@ export const CodeReviewInfoFragmentDoc = gql`
     codeUrl
     techTags
     notes
+  }
+`;
+
+export const UserInfoFragmentDoc = gql`
+  fragment UserInfo on User {
+    id
+    email
+    username
   }
 `;
 
@@ -293,14 +309,13 @@ export const ListCodeReviewsQueryDocument = gql`
     listCodeReviews {
       ...CodeReviewInfo
       owner {
-        id
-        email
-        username
+        ...UserInfo
       }
     }
   }
 
   ${CodeReviewInfoFragmentDoc}
+  ${UserInfoFragmentDoc}
 `;
 export class ListCodeReviewsQueryComponent extends React.Component<
   Partial<
@@ -401,13 +416,65 @@ export function CreateOfferMutationHOC<TProps, TChildProps = any>(
     CreateOfferMutationProps<TChildProps>
   >(CreateOfferMutationDocument, operationOptions);
 }
+export const ReceivedOffersQueryDocument = gql`
+  query ReceivedOffersQuery {
+    receivedOffers {
+      accepted
+      codeReview {
+        ...CodeReviewInfo
+      }
+      sender {
+        ...UserInfo
+      }
+    }
+  }
+
+  ${CodeReviewInfoFragmentDoc}
+  ${UserInfoFragmentDoc}
+`;
+export class ReceivedOffersQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      ReceivedOffersQueryQuery,
+      ReceivedOffersQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<ReceivedOffersQueryQuery, ReceivedOffersQueryVariables>
+        query={ReceivedOffersQueryDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type ReceivedOffersQueryProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<ReceivedOffersQueryQuery, ReceivedOffersQueryVariables>
+> &
+  TChildProps;
+export function ReceivedOffersQueryHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ReceivedOffersQueryQuery,
+        ReceivedOffersQueryVariables,
+        ReceivedOffersQueryProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    ReceivedOffersQueryQuery,
+    ReceivedOffersQueryVariables,
+    ReceivedOffersQueryProps<TChildProps>
+  >(ReceivedOffersQueryDocument, operationOptions);
+}
 export const LoginMutationDocument = gql`
   mutation LoginMutation($input: LoginInput!) {
     login(input: $input) {
       user {
-        id
-        username
-        email
+        ...UserInfo
       }
       errors {
         path
@@ -415,6 +482,8 @@ export const LoginMutationDocument = gql`
       }
     }
   }
+
+  ${UserInfoFragmentDoc}
 `;
 export class LoginMutationComponent extends React.Component<
   Partial<
@@ -554,11 +623,11 @@ export function RegisterMutationHOC<TProps, TChildProps = any>(
 export const MeQueryDocument = gql`
   query MeQuery {
     me {
-      id
-      email
-      username
+      ...UserInfo
     }
   }
+
+  ${UserInfoFragmentDoc}
 `;
 export class MeQueryComponent extends React.Component<
   Partial<ReactApollo.QueryProps<MeQueryQuery, MeQueryVariables>>

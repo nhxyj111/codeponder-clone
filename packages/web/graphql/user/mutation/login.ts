@@ -1,12 +1,11 @@
 import gql from "graphql-tag";
+import { UserInfoFragment } from "../fragments";
 
 export const loginMutation = gql`
   mutation LoginMutation($input: LoginInput!) {
     login(input: $input) {
       user {
-        id
-        username
-        email
+        ...UserInfo
       }
       errors {
         path
@@ -14,4 +13,6 @@ export const loginMutation = gql`
       }
     }
   }
+
+  ${UserInfoFragment}
 `;
