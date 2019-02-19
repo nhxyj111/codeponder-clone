@@ -1,0 +1,12 @@
+input DeleteOfferInput {
+  userId: String!
+  codeReviewId: String!
+}
+
+type DeleteOfferResponse {
+  ok: Boolean!
+}
+
+type Mutation {
+  deleteOffer(input: DeleteOfferInput!): DeleteOfferResponse!
+}

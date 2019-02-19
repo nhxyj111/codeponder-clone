@@ -4,28 +4,24 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryColumn
 } from "typeorm";
 import { CodeReview } from "./CodeReview";
 import { User } from "./User";
 
 @Entity()
 export class Offer extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @Column({ type: "text", default: "inprogress" })
+  status: string;
 
-  @Column({ type: "boolean", default: false })
-  accepted: boolean;
-
-  @Column()
+  @PrimaryColumn()
   userId: string;
+  @PrimaryColumn()
+  codeReviewId: string;
 
   @ManyToOne(() => User, user => user.offers)
   @JoinColumn({ name: "userId" })
   user: Promise<User>;
-
-  @Column()
-  codeReviewId: string;
 
   @ManyToOne(() => CodeReview, cr => cr.offers)
   @JoinColumn({ name: "codeReviewId" })

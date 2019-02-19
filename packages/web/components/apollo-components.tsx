@@ -16,6 +16,20 @@ export interface CreateOfferInput {
   codeReviewId: string;
 }
 
+export interface DeleteOfferInput {
+  userId: string;
+
+  codeReviewId: string;
+}
+
+export interface UpdateOfferStatusInput {
+  userId: string;
+
+  codeReviewId: string;
+
+  status: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -94,6 +108,24 @@ export type CreateOfferMutationCreateOffer = {
   ok: boolean;
 };
 
+export type UpdateOfferStatusMutationVariables = {
+  input: UpdateOfferStatusInput;
+};
+
+export type UpdateOfferStatusMutationMutation = {
+  __typename?: "Mutation";
+
+  updateOfferStatus: UpdateOfferStatusMutationUpdateOfferStatus;
+};
+
+export type UpdateOfferStatusMutationUpdateOfferStatus = {
+  __typename?: "UpdateOfferStatusResponse";
+
+  offer: Maybe<UpdateOfferStatusMutationOffer>;
+};
+
+export type UpdateOfferStatusMutationOffer = OfferInfoFragment;
+
 export type ReceivedOffersQueryVariables = {};
 
 export type ReceivedOffersQueryQuery = {
@@ -102,19 +134,7 @@ export type ReceivedOffersQueryQuery = {
   receivedOffers: ReceivedOffersQueryReceivedOffers[];
 };
 
-export type ReceivedOffersQueryReceivedOffers = {
-  __typename?: "Offer";
-
-  accepted: boolean;
-
-  codeReview: ReceivedOffersQueryCodeReview;
-
-  sender: ReceivedOffersQuerySender;
-};
-
-export type ReceivedOffersQueryCodeReview = CodeReviewInfoFragment;
-
-export type ReceivedOffersQuerySender = UserInfoFragment;
+export type ReceivedOffersQueryReceivedOffers = OfferInfoFragment;
 
 export type LoginMutationVariables = {
   input: LoginInput;
@@ -200,6 +220,20 @@ export type CodeReviewInfoFragment = {
   notes: string;
 };
 
+export type OfferInfoFragment = {
+  __typename?: "Offer";
+
+  status: string;
+
+  codeReview: OfferInfoCodeReview;
+
+  sender: OfferInfoSender;
+};
+
+export type OfferInfoCodeReview = CodeReviewInfoFragment;
+
+export type OfferInfoSender = UserInfoFragment;
+
 export type UserInfoFragment = {
   __typename?: "User";
 
@@ -235,6 +269,21 @@ export const UserInfoFragmentDoc = gql`
     email
     username
   }
+`;
+
+export const OfferInfoFragmentDoc = gql`
+  fragment OfferInfo on Offer {
+    status
+    codeReview {
+      ...CodeReviewInfo
+    }
+    sender {
+      ...UserInfo
+    }
+  }
+
+  ${CodeReviewInfoFragmentDoc}
+  ${UserInfoFragmentDoc}
 `;
 
 // ====================================================
@@ -416,21 +465,73 @@ export function CreateOfferMutationHOC<TProps, TChildProps = any>(
     CreateOfferMutationProps<TChildProps>
   >(CreateOfferMutationDocument, operationOptions);
 }
-export const ReceivedOffersQueryDocument = gql`
-  query ReceivedOffersQuery {
-    receivedOffers {
-      accepted
-      codeReview {
-        ...CodeReviewInfo
-      }
-      sender {
-        ...UserInfo
+export const UpdateOfferStatusMutationDocument = gql`
+  mutation UpdateOfferStatusMutation($input: UpdateOfferStatusInput!) {
+    updateOfferStatus(input: $input) {
+      offer {
+        ...OfferInfo
       }
     }
   }
 
-  ${CodeReviewInfoFragmentDoc}
-  ${UserInfoFragmentDoc}
+  ${OfferInfoFragmentDoc}
+`;
+export class UpdateOfferStatusMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      UpdateOfferStatusMutationMutation,
+      UpdateOfferStatusMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        UpdateOfferStatusMutationMutation,
+        UpdateOfferStatusMutationVariables
+      >
+        mutation={UpdateOfferStatusMutationDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type UpdateOfferStatusMutationProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    UpdateOfferStatusMutationMutation,
+    UpdateOfferStatusMutationVariables
+  >
+> &
+  TChildProps;
+export type UpdateOfferStatusMutationMutationFn = ReactApollo.MutationFn<
+  UpdateOfferStatusMutationMutation,
+  UpdateOfferStatusMutationVariables
+>;
+export function UpdateOfferStatusMutationHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        UpdateOfferStatusMutationMutation,
+        UpdateOfferStatusMutationVariables,
+        UpdateOfferStatusMutationProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    UpdateOfferStatusMutationMutation,
+    UpdateOfferStatusMutationVariables,
+    UpdateOfferStatusMutationProps<TChildProps>
+  >(UpdateOfferStatusMutationDocument, operationOptions);
+}
+export const ReceivedOffersQueryDocument = gql`
+  query ReceivedOffersQuery {
+    receivedOffers {
+      ...OfferInfo
+    }
+  }
+
+  ${OfferInfoFragmentDoc}
 `;
 export class ReceivedOffersQueryComponent extends React.Component<
   Partial<
