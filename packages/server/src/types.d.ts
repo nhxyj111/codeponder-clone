@@ -37,6 +37,8 @@ export interface RegisterInput {
 export interface Query {
   listCodeReviews: CodeReview[];
 
+  receivedOffers: Offer[];
+
   me?: Maybe<User>;
 }
 
@@ -62,6 +64,16 @@ export interface User {
   username: string;
 
   email: string;
+}
+
+export interface Offer {
+  codeReviewId: string;
+
+  userId: string;
+
+  codeReview: CodeReview;
+
+  sender: User;
 }
 
 export interface Mutation {
@@ -180,11 +192,18 @@ export namespace QueryResolvers {
       Context
     >;
 
+    receivedOffers?: ReceivedOffersResolver<Offer[], TypeParent, Context>;
+
     me?: MeResolver<Maybe<User>, TypeParent, Context>;
   }
 
   export type ListCodeReviewsResolver<
     R = CodeReview[],
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type ReceivedOffersResolver<
+    R = Offer[],
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -271,6 +290,39 @@ export namespace UserResolvers {
   export type EmailResolver<
     R = string,
     Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace OfferResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Offer> {
+    codeReviewId?: CodeReviewIdResolver<string, TypeParent, Context>;
+
+    userId?: UserIdResolver<string, TypeParent, Context>;
+
+    codeReview?: CodeReviewResolver<CodeReview, TypeParent, Context>;
+
+    sender?: SenderResolver<User, TypeParent, Context>;
+  }
+
+  export type CodeReviewIdResolver<
+    R = string,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type UserIdResolver<
+    R = string,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type CodeReviewResolver<
+    R = CodeReview,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type SenderResolver<
+    R = User,
+    Parent = Offer,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -465,6 +517,7 @@ export interface IResolvers<Context = MyContext> {
   Query?: QueryResolvers.Resolvers<Context>;
   CodeReview?: CodeReviewResolvers.Resolvers<Context>;
   User?: UserResolvers.Resolvers<Context>;
+  Offer?: OfferResolvers.Resolvers<Context>;
   Mutation?: MutationResolvers.Resolvers<Context>;
   CreateCodeReviewResponse?: CreateCodeReviewResponseResolvers.Resolvers<
     Context
