@@ -1,7 +1,15 @@
 import { Card, Grid, Icon } from "semantic-ui-react";
 import { ListCodeReviewsQueryListCodeReviews } from "./apollo-components";
 
-export default ({ cr }: { cr: ListCodeReviewsQueryListCodeReviews }) => (
+export default ({
+  cr,
+  onOfferClick,
+  showOfferButton
+}: {
+  cr: ListCodeReviewsQueryListCodeReviews;
+  onOfferClick: () => void;
+  showOfferButton: boolean;
+}) => (
   <Grid.Column key={cr.id} width={4}>
     <Card>
       <Card.Content>
@@ -12,10 +20,14 @@ export default ({ cr }: { cr: ListCodeReviewsQueryListCodeReviews }) => (
         <Card.Description>{cr.notes.slice(0, 150)}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <a href={cr.codeUrl}>
-          <Icon name="user" />
-          Offer Review
-        </a>
+        {showOfferButton ? (
+          <a onClick={onOfferClick}>
+            <Icon name="user" />
+            Offer Review
+          </a>
+        ) : (
+          <div>Your code review</div>
+        )}
       </Card.Content>
     </Card>
   </Grid.Column>

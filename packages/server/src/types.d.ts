@@ -71,6 +71,8 @@ export interface Mutation {
 
   login: LoginResponse;
 
+  logout: boolean;
+
   register: RegisterResponse;
 }
 
@@ -289,6 +291,8 @@ export namespace MutationResolvers {
 
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
+    logout?: LogoutResolver<boolean, TypeParent, Context>;
+
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
   }
 
@@ -319,6 +323,11 @@ export namespace MutationResolvers {
     input: LoginInput;
   }
 
+  export type LogoutResolver<
+    R = boolean,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
   export type RegisterResolver<
     R = RegisterResponse,
     Parent = {},

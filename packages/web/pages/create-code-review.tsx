@@ -17,7 +17,7 @@ export interface FormValues {
 }
 
 export default () => (
-  <Layout>
+  <Layout showMenu={true}>
     <CreateCodeReviewMutationComponent>
       {mutate => (
         <Formik<CreateCodeReviewInput>

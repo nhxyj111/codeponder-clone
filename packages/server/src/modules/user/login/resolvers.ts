@@ -36,7 +36,7 @@ const resolvers: MutationResolvers.Resolvers = {
 
     return {
       errors: [],
-      user: null
+      user
     };
   }
 };

@@ -47,8 +47,9 @@ const startServer = async () => {
 
   const server = new ApolloServer({
     schema: applyMiddleware(createSchema(), middleware),
-    context: ({ req }: any) => ({
-      req
+    context: ({ req, res }: any) => ({
+      req,
+      res
     })
   });
 
